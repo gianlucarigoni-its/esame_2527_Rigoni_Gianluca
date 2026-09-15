@@ -1,14 +1,14 @@
 import { Classroom } from "../classroom/classroom.entity";
 import { User } from "../user/user.entity";
 
-export type Assignment = {
-  id: string;
-  title: string;
-  classroom: Classroom;
-  studentsCompleted: User[];
-  studentsCount: number;
-  completedCount: number;
+export type StudentAssignment = {
+  studentId: string;
   completed: boolean;
-  createdAt: string;
-  createdBy: User;
+};
+
+export type Assignment = {
+  title: string;
+  classroom: string | Classroom;
+  students: StudentAssignment[];
+  createdBy: string | User;
 };

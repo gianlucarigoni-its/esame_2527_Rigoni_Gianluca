@@ -7,21 +7,22 @@ const assignmentSchema = new Schema<Assignment>({
     type: Schema.Types.ObjectId,
     ref: "Classroom",
   },
-  studentsCompleted: [
+  students: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      studentId: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+      completed: {
+        type: Boolean,
+        default: false,
+      },
     },
   ],
   createdBy: {
     type: Schema.Types.ObjectId,
     ref: "User",
   },
-  createdAt: Date,
-});
-
-assignmentSchema.virtual("completedCount").get(function () {
-  return this.studentsCompleted.length;
 });
 
 assignmentSchema.set("toJSON", {
