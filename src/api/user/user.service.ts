@@ -6,8 +6,9 @@ import { UserModel } from "./user.model";
 import * as bcrypt from "bcrypt";
 
 export class UserService {
-  async find(role: UserFileterDto): Promise<User[]> {
-    let result = await UserModel.find(role);
+  async find(filter: UserFileterDto): Promise<User[]> {
+    let pippofranco = filter.type ? { role: filter.type } : {};
+    let result = await UserModel.find(pippofranco);
     return result;
   }
 
