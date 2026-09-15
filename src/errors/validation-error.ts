@@ -16,12 +16,7 @@ export class ValidationError extends Error {
   }
 }
 
-export const validationHandler = (
-  err: Error,
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+export const validationHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof ValidationError) {
     res.status(400);
     res.json({

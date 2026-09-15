@@ -4,11 +4,7 @@ export type User = {
   id: string;
   firstName: string;
   lastName: string;
-  role: {
-    type: String;
-    enum: ["student", "teacher"];
-    required: true;
-  };
+  role: Role;
   fullName: string;
   picture: string;
 };
