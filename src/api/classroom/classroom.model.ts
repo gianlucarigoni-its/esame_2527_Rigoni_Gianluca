@@ -1,5 +1,4 @@
 import { model, Schema } from "mongoose";
-import { User } from "../user/user.entity";
 import { Classroom } from "./classroom.entity";
 
 const classrommSchema = new Schema<Classroom>({

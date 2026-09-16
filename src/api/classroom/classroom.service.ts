@@ -26,7 +26,34 @@ export class ClassroomService {
     const added = await classroomModel.create(newClassroom);
     const plainAdded = added.toObject();
 
-    return { id: plainAdded.id, name: plainAdded.name, studentsCount: plainAdded.studentsCount, createdBy: teacher.toObject() };
+    return {
+      id: plainAdded.id,
+      name: plainAdded.name,
+      studentsCount: plainAdded.studentsCount,
+      createdBy: teacher.toObject(),
+    };
+  }
+
+  async list(id: string, role: Role): Promise<Omit<Classroom, "students">[]> {
+    if (role === Role.student) {
+      const classrooms = await classroomModel.find({ students: id }).exec();
+
+      const result = classrooms.map((classroom) => {
+        const { students, ...res } = classroom.toObject();
+        return res;
+      });
+
+      return result;
+    } else {
+      const classrooms = await classroomModel.find({ createdBy: id }).exec();
+
+      const result = classrooms.map((classroom) => {
+        const { students, ...res } = classroom.toObject();
+        return res;
+      });
+
+      return result;
+    }
   }
 }
 

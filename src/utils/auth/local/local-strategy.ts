@@ -3,7 +3,6 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { UserIdentityModel } from "./user-identity.model";
 import * as bcrypt from "bcrypt";
 
-console.log("LOCAL STRATEGY CARICATA");
 passport.use(
   "local",
   new LocalStrategy(
