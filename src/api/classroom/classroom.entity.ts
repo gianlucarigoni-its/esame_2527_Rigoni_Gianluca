@@ -1,9 +1,10 @@
+import { Types } from "mongoose";
 import { User } from "../user/user.entity";
 
 export type Classroom = {
   id: string;
   name: string;
-  students: User[];
+  students: Types.ObjectId[];
   studentsCount: number;
-  createdBy: User;
+  createdBy: Types.ObjectId | User;
 };

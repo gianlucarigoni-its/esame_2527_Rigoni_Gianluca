@@ -13,7 +13,6 @@ const classrommSchema = new Schema<Classroom>({
   createdBy: {
     type: Schema.Types.ObjectId,
     ref: "User",
-    required: true,
   },
 });
 
