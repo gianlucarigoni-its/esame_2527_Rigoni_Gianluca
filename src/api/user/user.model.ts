@@ -7,7 +7,7 @@ const userSchema = new Schema<User>({
   lastName: String,
   role: {
     type: String,
-    enum: [Role.Student, Role.Teacher],
+    enum: [Role.student, Role.teacher],
   },
   picture: String,
 });
