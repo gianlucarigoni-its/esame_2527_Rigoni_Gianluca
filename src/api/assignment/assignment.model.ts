@@ -28,10 +28,18 @@ const assignmentSchema = new Schema<Assignment>(
   {
     timestamps: {
       createdAt: "createdAt",
-      updatedAt: "updatedAt",
+      updatedAt: false,
     },
   },
 );
+
+assignmentSchema.virtual("studentsCount").get(function () {
+  return (this.students as any[]).length;
+});
+
+assignmentSchema.virtual("completedCount").get(function () {
+  return (this.students as any[]).filter((s) => s.completed).length;
+});
 
 assignmentSchema.set("toJSON", {
   virtuals: true,

@@ -15,15 +15,7 @@ export const register = async (req: TypedRequest<RegisterDto>, res: Response, ne
     const newUser = await userSrv.add(userData, credentials);
     res.status(201).json(newUser);
   } catch (err) {
-    if (err instanceof UserExistsError) {
-      res.status(400);
-      res.json({
-        error: err.name,
-        message: err.message,
-      });
-    } else {
-      next(err);
-    }
+    next(err);
   }
 };
 

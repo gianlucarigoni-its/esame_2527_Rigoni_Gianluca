@@ -1,12 +1,13 @@
 import { Type } from "class-transformer";
-import { IsArray, IsMongoId, IsString } from "class-validator";
+import { ArrayMinSize, IsArray, IsMongoId, IsNotEmpty, IsString } from "class-validator";
 
 export class createClassroomDto {
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   @IsArray()
+  @ArrayMinSize(1)
   @IsString({ each: true })
-  @IsMongoId({ each: true })
-  usersId: string[];
+  students: string[];
 }

@@ -1,12 +1,9 @@
 import { Types } from "mongoose";
 import { User } from "../user/user.entity";
 
-export type AssignmentResponse = {
+export type ClassroomResponse = {
   id: string | Types.ObjectId;
-  title: string;
+  name: string;
   studentsCount: number;
-  completedCount: number;
-  completed?: boolean;
-  createdAt: Date;
   createdBy: User;
 };

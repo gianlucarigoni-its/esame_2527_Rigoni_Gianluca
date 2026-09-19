@@ -1,59 +1,58 @@
-import { Role } from "../../utils/user.role.enum";
+import { User } from "../user/user.entity";
 import { UserModel } from "../user/user.model";
 import { Classroom } from "./classroom.entity";
 import { classroomModel } from "./classroom.model";
+import { ClassroomResponse } from "./classroom.response";
 
 export class ClassroomService {
-  async add(name: string, usersId: string[], teacherId: string): Promise<Omit<Classroom, "students"> | null> {
-    const students = await UserModel.find({ _id: { $in: usersId } }).exec();
+  async getClassroomById(id: string): Promise<Classroom | null> {
+    const classroom = await classroomModel.findById(id).exec();
+    if (!classroom) return null;
+    return classroom;
+  }
 
-    if (students.length != usersId.length) return null;
+  async getStudentClassrooms(id: string): Promise<ClassroomResponse[]> {
+    const classrooms = await classroomModel.find({ students: id }).populate<{ createdBy: User }>("createdBy").exec();
+    return classrooms.map((c) => {
+      const obj = c.toObject();
+      const { students, ...classroomResponse } = obj;
+      return classroomResponse;
+    });
+  }
 
-    const areStudentsOnly = students.every((student) => student.role === Role.student);
-    if (!areStudentsOnly) return null;
+  async getTeacherClassrooms(id: string): Promise<ClassroomResponse[]> {
+    const classrooms = await classroomModel.find({ createdBy: id }).populate<{ createdBy: User }>("createdBy").exec();
+    return classrooms.map((c) => {
+      const obj = c.toObject();
+      const { students, ...classroomResponse } = obj;
+      return classroomResponse;
+    });
+  }
 
-    const classroomStudents = students.map((student) => student.id);
+  async getStudentById(studentId: string): Promise<User | null> {
+    const student = await UserModel.findById(studentId).exec();
+    if (!student) return null;
 
-    const teacher = await UserModel.findById(teacherId);
-    if (!teacher || teacher.role != Role.teacher) return null;
+    return student;
+  }
 
+  async add(name: string, studentsId: string[], teacherId: string): Promise<ClassroomResponse> {
     const newClassroom = {
       name,
-      students: classroomStudents,
+      students: studentsId,
       createdBy: teacherId,
     };
 
     const added = await classroomModel.create(newClassroom);
-    const plainAdded = added.toObject();
+
+    const teacher = await UserModel.findById(teacherId).exec();
 
     return {
-      id: plainAdded.id,
-      name: plainAdded.name,
-      studentsCount: plainAdded.studentsCount,
-      createdBy: teacher.toObject(),
+      id: added._id,
+      name: added.name,
+      studentsCount: added.studentsCount,
+      createdBy: teacher!,
     };
-  }
-
-  async list(id: string, role: Role): Promise<Omit<Classroom, "students">[]> {
-    if (role === Role.student) {
-      const classrooms = await classroomModel.find({ students: id }).exec();
-
-      const result = classrooms.map((classroom) => {
-        const { students, ...res } = classroom.toObject();
-        return res;
-      });
-
-      return result;
-    } else {
-      const classrooms = await classroomModel.find({ createdBy: id }).exec();
-
-      const result = classrooms.map((classroom) => {
-        const { students, ...res } = classroom.toObject();
-        return res;
-      });
-
-      return result;
-    }
   }
 }
 

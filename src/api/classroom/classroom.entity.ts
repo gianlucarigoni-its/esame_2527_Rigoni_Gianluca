@@ -2,9 +2,9 @@ import { Types } from "mongoose";
 import { User } from "../user/user.entity";
 
 export type Classroom = {
-  id: string;
+  id: string | Types.ObjectId;
   name: string;
   students: Types.ObjectId[];
   studentsCount: number;
-  createdBy: Types.ObjectId | User;
+  createdBy: string | Types.ObjectId;
 };

@@ -1,6 +1,4 @@
 import { Types } from "mongoose";
-import { Classroom } from "../classroom/classroom.entity";
-import { User } from "../user/user.entity";
 
 export type StudentAssignment = {
   studentId: string | Types.ObjectId;
@@ -8,10 +6,19 @@ export type StudentAssignment = {
 };
 
 export type Assignment = {
+  id: string | Types.ObjectId;
   title: string;
-  classroom: string | Classroom;
+  classroom: string | Types.ObjectId;
   students: StudentAssignment[];
+  studentsCount: number;
+  completedCount: number;
   createdAt: Date;
-  updatedAt?: Date;
-  createdBy: string | User;
+  createdBy: string | Types.ObjectId;
+};
+
+export type AssignmentDocument = {
+  title: string;
+  classroom: string | Types.ObjectId;
+  students: StudentAssignment[];
+  createdBy: string | Types.ObjectId;
 };

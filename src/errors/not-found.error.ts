@@ -8,12 +8,7 @@ export class NotFoundError extends Error {
   }
 }
 
-export const notFoundHandler = (
-  err: Error,
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+export const notFoundHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof NotFoundError) {
     res.status(404);
     res.json({
