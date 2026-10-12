@@ -1,4 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
+/* 1. Importa il font da Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Martel+Sans:wght@200;300;400;600;700;800;900&display=swap");
 
-/* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap';
+/* 2. Definisci la variabile PRIMA di Bootstrap */
+$font-family-sans-serif: "Martel Sans", sans-serif;
+
+/* 3. Importa Bootstrap */
+@import "bootstrap/scss/bootstrap";

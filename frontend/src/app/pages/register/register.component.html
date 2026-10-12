@@ -1,0 +1,167 @@
+<div class="d-flex justify-content-center mt-5 p-2">
+  <div class="border rounded-4 w-100" style="max-width: 600px">
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      <div class="text-center overflow-hidden">
+        <img
+          src="img/esame-logo.png"
+          class="img-fluid mx-auto d-block"
+          style="max-width: 140px; margin-top: -30px; margin-bottom: -30px"
+        />
+      </div>
+      <h3 class="text-center fw-bold opacity-75">Register</h3>
+      @if (success()) {
+        <div class="alert alert-success text-center m-3">
+          Registrazione completata! Ti stiamo portando al login…
+        </div>
+      }
+      @if (errorMessage()) {
+        <div
+          class="text-danger text-center rounded bg-danger bg-opacity-25 m-3"
+        >
+          {{ errorMessage() }}
+        </div>
+      }
+      <div class="d-flex gap-2 flex-column m-3">
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <label for="firstName" class="opacity-75">Nome</label>
+            <input
+              class="form-control mb-3"
+              id="firstName"
+              type="text"
+              formControlName="firstName"
+              [class.is-invalid]="
+                registerForm.controls.firstName.invalid &&
+                registerForm.controls.firstName.touched
+              "
+            />
+            <div class="invalid-feedback">Nome richiesto</div>
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="lastName" class="opacity-75">Cognome</label>
+            <input
+              class="form-control mb-3"
+              id="lastName"
+              type="text"
+              formControlName="lastName"
+              [class.is-invalid]="
+                registerForm.controls.lastName.invalid &&
+                registerForm.controls.lastName.touched
+              "
+            />
+            <div class="invalid-feedback">Cognome richiesto</div>
+          </div>
+        </div>
+        <div>
+          <label for="email" class="opacity-75">Email</label>
+          <input
+            class="form-control mb-3"
+            id="email"
+            type="email"
+            formControlName="username"
+            [class.is-invalid]="
+              registerForm.controls.username.invalid &&
+              registerForm.controls.username.touched
+            "
+            [class.is-valid]="
+              registerForm.controls.username.valid &&
+              registerForm.controls.username.touched
+            "
+          />
+          <div class="invalid-feedback">Inserisci un email valida</div>
+        </div>
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <label for="password" class="opacity-75">Password</label>
+            <input
+              class="form-control"
+              id="password"
+              type="password"
+              formControlName="password"
+              [class.is-invalid]="
+                registerForm.controls.password.touched &&
+                registerForm.controls.password.invalid
+              "
+              [class.is-valid]="
+                registerForm.controls.password.touched &&
+                registerForm.controls.password.valid
+              "
+            />
+            <div class="invalid-feedback">
+              Min. 8 caratteri, una maiuscola, un numero, un simbolo
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="confirmPassword" class="opacity-75"
+              >Conferma Password</label
+            >
+            <input
+              id="confirmPassword"
+              class="form-control"
+              type="password"
+              formControlName="confirmPassword"
+              [class.is-invalid]="
+                registerForm.controls.confirmPassword.touched &&
+                registerForm.hasError('passwordMismatch')
+              "
+            />
+            <div class="invalid-feedback">Le password non coincidono</div>
+          </div>
+        </div>
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <label for="role" class="opacity-75">Ruolo</label>
+            <select
+              class="form-select mb-3"
+              formControlName="role"
+              id="role"
+              [class.is-invalid]="
+                registerForm.controls.role.touched &&
+                registerForm.controls.role.invalid
+              "
+              [class.is-valid]="
+                registerForm.controls.role.touched &&
+                registerForm.controls.role.valid
+              "
+            >
+              <option value="student">Studente</option>
+              <option value="teacher">Docente</option>
+            </select>
+            <div class="invalid-feedback">Ruolo richiesto</div>
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="picture" class="opacity-75">Foto profilo</label>
+            <input
+              class="form-control"
+              id="picture"
+              type="text"
+              formControlName="picture"
+              [class.is-invalid]="
+                registerForm.controls.picture.touched &&
+                registerForm.controls.picture.invalid
+              "
+              [class.is-valid]="
+                registerForm.controls.picture.touched &&
+                registerForm.controls.picture.valid
+              "
+            />
+            <div class="invalid-feedback">Foto profilo richiesta</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center">
+        <button
+          [disabled]="registerForm.invalid || loading()"
+          type="submit"
+          class="btn btn-primary m-2"
+        >
+          Register
+        </button>
+      </div>
+      <div class="d-flex justify-content-center gap-1">
+        <p>Hai già un account?</p>
+        <a routerLink="/login">Accedi</a>
+      </div>
+    </form>
+  </div>
+</div>

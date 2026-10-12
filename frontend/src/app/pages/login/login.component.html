@@ -1,0 +1,55 @@
+<div class="d-flex justify-content-center mt-5 pt-5">
+  <div class="border rounded-4 p-2 mt-5">
+    <form [formGroup]="loginForm" (ngSubmit)="login()" style="min-width: 420px">
+      <div class="text-center overflow-hidden">
+        <img
+          src="img/esame-logo.png"
+          class="img-fluid mx-auto d-block"
+          style="max-width: 140px; margin-top: -30px; margin-bottom: -30px"
+        />
+      </div>
+      <h3 class="text-center fw-bold opacity-75">Login</h3>
+      <div class="text-danger text-center rounded bg-danger bg-opacity-25 m-3">
+        {{ errorMessage() }}
+      </div>
+      <div class="d-flex gap-2 flex-column m-3 gap-2">
+        <label for="email" class="opacity-75">Email</label>
+        <input
+          class="form-control mb-3"
+          id="email"
+          type="email"
+          formControlName="username"
+          [class.is-invalid]="
+            loginForm.controls.username.invalid &&
+            loginForm.controls.username.touched
+          "
+          [class.is-valid]="
+            loginForm.controls.username.valid &&
+            loginForm.controls.username.touched
+          "
+        />
+        <div class="invalid-feedback">Inserisci un email valida</div>
+        <label for="password" class="opacity-75">Password</label>
+        <input
+          class="form-control"
+          id="password"
+          type="password"
+          formControlName="password"
+        />
+      </div>
+      <div class="text-center">
+        <button
+          [disabled]="loginForm.invalid"
+          type="submit"
+          class="btn btn-primary btn-block m-2"
+        >
+          Sign In
+        </button>
+      </div>
+      <div class="d-flex justify-content-center gap-1">
+        <p>Non hai ancora un account?</p>
+        <a routerLink="/register">Registrati</a>
+      </div>
+    </form>
+  </div>
+</div>

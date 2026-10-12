@@ -1,0 +1,23 @@
+{
+  "name": "esame_2527_rigoni_gianluca",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently --names \"backend,frontend\" \"npm run dev --prefix ./backend\" \"npm run start --prefix ./frontend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gianlucarigoni-its/esame_2527_Rigoni_Gianluca.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/gianlucarigoni-its/esame_2527_Rigoni_Gianluca/issues"
+  },
+  "homepage": "https://github.com/gianlucarigoni-its/esame_2527_Rigoni_Gianluca#readme",
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}

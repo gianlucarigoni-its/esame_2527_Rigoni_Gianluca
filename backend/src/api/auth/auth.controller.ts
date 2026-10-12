@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { TypedRequest } from "../../utils/typed-request.interface";
-import { RegisterDto } from "./auth.dto";
-import userSrv from "../user/user.service";
-import { omit, pick } from "lodash";
-import { UserExistsError } from "../../errors/user-exists.error";
-import passport from "passport";
 import * as jwt from "jsonwebtoken";
+import { omit, pick } from "lodash";
+import passport from "passport";
+import { TypedRequest } from "../../utils/typed-request.interface";
+import userSrv from "../user/user.service";
+import { RegisterDto } from "./auth.dto";
 
 export const register = async (req: TypedRequest<RegisterDto>, res: Response, next: NextFunction) => {
   try {
