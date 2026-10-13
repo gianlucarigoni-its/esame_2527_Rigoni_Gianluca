@@ -5,14 +5,16 @@ import { catchError, of, Subject, throwError } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { User } from '../../utils/types/user.type';
+import { LogoComponent } from '../../components/logo/logo.component';
+import { OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterModule],
+  imports: [ReactiveFormsModule, RouterModule, LogoComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   protected fb = inject(FormBuilder);
   protected authSrv = inject(AuthService);
   private destroyRef = inject(DestroyRef);

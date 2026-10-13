@@ -1,13 +1,7 @@
 <div class="d-flex justify-content-center mt-5 p-2">
   <div class="border rounded-4 w-100" style="max-width: 600px">
     <form [formGroup]="registerForm" (ngSubmit)="register()">
-      <div class="text-center overflow-hidden">
-        <img
-          src="img/esame-logo.png"
-          class="img-fluid mx-auto d-block"
-          style="max-width: 140px; margin-top: -30px; margin-bottom: -30px"
-        />
-      </div>
+      <app-logo></app-logo>
       <h3 class="text-center fw-bold opacity-75">Register</h3>
       @if (success()) {
         <div class="alert alert-success text-center m-3">

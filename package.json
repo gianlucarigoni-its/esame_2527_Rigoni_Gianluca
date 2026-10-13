@@ -19,5 +19,8 @@
   "homepage": "https://github.com/gianlucarigoni-its/esame_2527_Rigoni_Gianluca#readme",
   "devDependencies": {
     "concurrently": "^10.0.5"
+  },
+  "dependencies": {
+    "bootstrap-icons": "^1.13.2"
   }
 }

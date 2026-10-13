@@ -1,8 +1,13 @@
-/* 1. Importa il font da Google Fonts */
+// 1. @use di Bootstrap con la personalizzazione delle variabili
+@use "bootstrap/scss/bootstrap" with (
+  $font-family-sans-serif: (
+    "Martel Sans",
+    sans-serif,
+  )
+);
+
+// 2. Import delle icone tramite @use
+@use "bootstrap-icons/font/bootstrap-icons.css";
+
+// 3. Import dei font esterni CSS dopo i @use
 @import url("https://fonts.googleapis.com/css2?family=Martel+Sans:wght@200;300;400;600;700;800;900&display=swap");
-
-/* 2. Definisci la variabile PRIMA di Bootstrap */
-$font-family-sans-serif: "Martel Sans", sans-serif;
-
-/* 3. Importa Bootstrap */
-@import "bootstrap/scss/bootstrap";

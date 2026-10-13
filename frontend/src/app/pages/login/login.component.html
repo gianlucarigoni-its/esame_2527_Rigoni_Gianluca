@@ -1,14 +1,8 @@
 <div class="d-flex justify-content-center mt-5 pt-5">
   <div class="border rounded-4 p-2 mt-5">
     <form [formGroup]="loginForm" (ngSubmit)="login()" style="min-width: 420px">
-      <div class="text-center overflow-hidden">
-        <img
-          src="img/esame-logo.png"
-          class="img-fluid mx-auto d-block"
-          style="max-width: 140px; margin-top: -30px; margin-bottom: -30px"
-        />
-      </div>
-      <h3 class="text-center fw-bold opacity-75">Login</h3>
+      <app-logo />
+      <h3 class="text-center fw-bold opacity-75 m-2">Login</h3>
       <div class="text-danger text-center rounded bg-danger bg-opacity-25 m-3">
         {{ errorMessage() }}
       </div>
