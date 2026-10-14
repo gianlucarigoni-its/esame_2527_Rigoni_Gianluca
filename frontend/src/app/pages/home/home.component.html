@@ -1,6 +1,21 @@
 <div>
   <!-- NAVBAR -->
-  <app-navbar [user]="this.authSrv.currentUser()"></app-navbar>
+  <app-navbar
+    [user]="user()"
+    (toHome)="goTo('home')"
+    (toLogin)="goTo('login')"
+    (toRegister)="goTo('register')"
+    (toProfile)="goTo('profile')"
+    (toLogout)="logout()"
+  />
 
   <!-- LISTA CLASSI CREATE O FREQUENTATNTI -->
+  @if (!user()) {
+    <div>ESEGUI IL LOGIN</div>
+  } @else {
+    <app-lista-classi
+      [user]="user()!"
+      [classrooms]="classi()"
+    ></app-lista-classi>
+  }
 </div>

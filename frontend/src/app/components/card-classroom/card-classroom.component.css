@@ -1,0 +1,11 @@
+.classroom-card {
+  cursor: pointer;
+  transition:
+    transform 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+}
+
+.classroom-card:hover {
+  transform: translateY(-4px);
+  --bs-box-shadow-sm: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.12);
+}

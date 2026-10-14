@@ -1,18 +1,46 @@
-import { Component, input } from '@angular/core';
-import { LogoComponent } from '../logo/logo.component';
+import {
+  Component,
+  signal,
+  ElementRef,
+  HostListener,
+  inject,
+  output,
+  input,
+} from '@angular/core';
+import { AuthService } from '../../services/auth.service';
 import { User } from '../../utils/types/user.type';
-import { OnInit } from '@angular/core';
+import { LogoComponent } from '../logo/logo.component';
 
 @Component({
-  imports: [LogoComponent],
   selector: 'app-navbar',
-  styleUrl: './navbar.component.css',
   templateUrl: './navbar.component.html',
+  imports: [LogoComponent],
 })
-export class NavbarComponent implements OnInit {
-  user = input<User | null>();
+export class NavbarComponent {
+  user = input.required<User | null>();
 
-  ngOnInit() {
-    console.log('NAVBAR | role: ' + this.user()?.role);
+  toLogin = output<void>();
+  toRegister = output<void>();
+  toProfile = output<void>();
+  toLogout = output<void>();
+  toHome = output<void>();
+
+  isMenuOpen = signal(false);
+
+  private elementRef = inject(ElementRef);
+
+  toggleMenu() {
+    this.isMenuOpen.update((open) => !open);
+  }
+
+  closeMenu() {
+    this.isMenuOpen.set(false);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.closeMenu();
+    }
   }
 }
