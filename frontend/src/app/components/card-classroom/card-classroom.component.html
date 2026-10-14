@@ -1,7 +1,4 @@
-<div
-  class="card h-100 border-0 shadow-sm classroom-card overflow-hidden"
-  (click)="selected.emit()"
->
+<div class="card h-100 border-0 shadow-sm classroom-card overflow-hidden">
   <div class="card-header bg-primary border-0 text-white p-3">
     <h2
       class="h5 card-title mb-0 text-truncate fw-bold"
@@ -34,11 +31,14 @@
           {{ classroom().studentsCount === 1 ? "studente" : "studenti" }}
         </span>
       </div>
-      <span
-        class="text-primary fw-medium d-inline-flex align-items-center gap-1"
-      >
-        Entra <i class="bi bi-arrow-right"></i>
-      </span>
+      <div class="d-flex align-items-center">
+        <a
+          class="stretched-link text-primary fw-medium d-inline-flex align-items-center gap-1"
+          [routerLink]="['/classrooms', classroom().id]"
+        >
+          Entra <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
     </div>
   </div>
 </div>
