@@ -9,3 +9,12 @@
   transform: translateY(-4px);
   --bs-box-shadow-sm: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.12);
 }
+
+.classroom-card:has(.stretched-link:focus-visible) {
+  outline: 2px solid var(--bs-primary);
+  outline-offset: 2px;
+}
+
+.classroom-card .stretched-link:focus-visible {
+  outline: none;
+}

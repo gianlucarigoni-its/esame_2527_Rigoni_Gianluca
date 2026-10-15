@@ -1,150 +1,152 @@
-@if (isOpen()) {
-  <div class="modal-backdrop show"></div>
+<div class="modal-header">
+  <h5 class="modal-title">
+    {{ isConfirming() ? "Conferma creazione" : "Crea nuova classe" }}
+  </h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Chiudi"
+    (click)="close()"
+  ></button>
+</div>
 
-  <div class="modal fade show d-block" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        @if (!isConfirming()) {
-          <div class="modal-header">
-            <h5 class="modal-title">Crea nuova classe</h5>
-            <button
-              type="button"
-              class="btn-close"
-              aria-label="Chiudi"
-              (click)="close()"
-            ></button>
-          </div>
+@if (!isConfirming()) {
+  <div class="modal-body">
+    <div class="mb-3">
+      <label for="classroom-name" class="form-label">Nome classe</label>
+      <input
+        #nameInput
+        id="classroom-name"
+        type="text"
+        class="form-control"
+        placeholder="Es. 5A Informatica"
+        [value]="name()"
+        (input)="name.set(nameInput.value)"
+      />
+    </div>
 
-          <div class="modal-body">
-            <div class="mb-3">
-              <label for="classroom-name" class="form-label">Nome classe</label>
-              <input
-                id="classroom-name"
-                type="text"
-                class="form-control"
-                [value]="name"
-                (input)="name = $any($event.target).value"
-                placeholder="Es. 5A Informatica"
-              />
-            </div>
+    <div class="mb-2 d-flex justify-content-between align-items-center">
+      <span class="form-label mb-0">
+        Studenti ({{ selectedIds().length }} selezionati)
+      </span>
+      @if (selectedIds().length > 0) {
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-secondary"
+          (click)="clearSelection()"
+        >
+          Azzera selezioni
+        </button>
+      }
+    </div>
 
-            <div class="mb-2 d-flex justify-content-between align-items-center">
-              <span class="form-label mb-0">
-                Studenti ({{ selectedStudentIds.length }} selezionati)
-              </span>
-              @if (selectedStudentIds.length > 0) {
-                <button
-                  type="button"
-                  class="btn btn-sm btn-outline-secondary"
-                  (click)="clearSelection()"
-                >
-                  Azzera selezioni
-                </button>
-              }
-            </div>
+    <div
+      ngbDropdown
+      #d="ngbDropdown"
+      autoClose="outside"
+      (keydown.escape)="onEscape($event, d)"
+    >
+      <div
+        ngbDropdownAnchor
+        class="form-control dropdown-toggle d-flex align-items-center selector-box"
+        (click)="d.toggle()"
+      >
+        <input
+          #search
+          type="text"
+          class="border-0 shadow-none flex-grow-1 p-0"
+          placeholder="Cerca e seleziona studenti..."
+          [value]="searchTerm()"
+          (input)="searchTerm.set(search.value)"
+          (focus)="d.open()"
+          (click)="$event.stopPropagation(); d.open()"
+        />
+      </div>
 
-            <div class="dropdown-selector" #dropdown>
-              <div
-                class="form-control dropdown-toggle d-flex align-items-center"
-                role="button"
-                tabindex="0"
-                (click)="toggleDropdown()"
-              >
-                <input
-                  type="text"
-                  class="border-0 shadow-none flex-grow-1 p-0"
-                  placeholder="Cerca e seleziona studenti..."
-                  [value]="searchTerm"
-                  (input)="onSearchInput($event)"
-                  (click)="$event.stopPropagation(); isDropdownOpen.set(true)"
-                />
-                <i class="bi bi-chevron-down ms-2"></i>
-              </div>
-
-              @if (isDropdownOpen()) {
-                <div class="dropdown-menu show w-100 mt-1">
-                  @for (student of filteredStudents(); track student.id) {
-                    <button
-                      type="button"
-                      class="dropdown-item d-flex justify-content-between align-items-center"
-                      [class.active]="isSelected(student.id)"
-                      (click)="toggleStudent(student.id)"
-                    >
-                      <span>{{ student.fullName }}</span>
-                      @if (isSelected(student.id)) {
-                        <i class="bi bi-check-lg"></i>
-                      }
-                    </button>
-                  } @empty {
-                    <div class="dropdown-item text-muted small">
-                      Nessuno studente trovato.
-                    </div>
-                  }
-                </div>
-              }
-            </div>
-          </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="close()">
-              Annulla
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              (click)="goToConfirm()"
-              [disabled]="!name.trim()"
-            >
-              Avanti
-            </button>
-          </div>
-        } @else {
-          <div class="modal-header">
-            <h5 class="modal-title">Conferma creazione</h5>
-            <button
-              type="button"
-              class="btn-close"
-              aria-label="Chiudi"
-              (click)="close()"
-            ></button>
-          </div>
-
-          <div class="modal-body">
-            <p><strong>Nome classe:</strong> {{ name }}</p>
-            <p class="mb-1">
-              <strong
-                >Studenti selezionati ({{ selectedStudents().length }}):</strong
-              >
-            </p>
-            @if (selectedStudents().length > 0) {
-              <ul class="mb-0">
-                @for (student of selectedStudents(); track student.id) {
-                  <li>{{ student.fullName }}</li>
-                }
-              </ul>
-            } @else {
-              <p class="text-muted small mb-0">Nessuno studente selezionato.</p>
+      <div ngbDropdownMenu class="w-100 mt-1">
+        @for (student of filteredStudents(); track student.id) {
+          <button
+            type="button"
+            ngbDropdownItem
+            class="d-flex justify-content-between align-items-center"
+            [class.active]="isSelected(student.id)"
+            (click)="toggleStudent(student.id)"
+          >
+            <span>{{ student.fullName }}</span>
+            @if (isSelected(student.id)) {
+              <i class="bi bi-check-lg"></i>
             }
-          </div>
-
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              (click)="backToForm()"
-            >
-              Indietro
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              (click)="confirmCreate()"
-            >
-              Crea classe
-            </button>
+          </button>
+        } @empty {
+          <div class="dropdown-item text-muted small">
+            @if (studentsLoading()) {
+              Caricamento studenti...
+            } @else if (studentsError()) {
+              Impossibile caricare gli studenti.
+            } @else {
+              Nessuno studente trovato.
+            }
           </div>
         }
       </div>
     </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-primary"
+      [disabled]="!canProceed()"
+      (click)="goToConfirm()"
+    >
+      Avanti
+    </button>
+  </div>
+} @else {
+  <div class="modal-body">
+    <p><strong>Nome classe:</strong> {{ name().trim() }}</p>
+    <p class="mb-1">
+      <strong>Studenti selezionati ({{ selectedStudents().length }}):</strong>
+    </p>
+    @if (selectedStudents().length > 0) {
+      <ul class="mb-0">
+        @for (student of selectedStudents(); track student.id) {
+          <li>{{ student.fullName }}</li>
+        }
+      </ul>
+    } @else {
+      <p class="text-muted small mb-0">Nessuno studente selezionato.</p>
+    }
+
+    @if (errorMessage()) {
+      <div class="alert alert-danger mt-3 mb-0" role="alert">
+        {{ errorMessage() }}
+      </div>
+    }
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      [disabled]="isSaving()"
+      (click)="backToForm()"
+    >
+      Indietro
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      [disabled]="isSaving()"
+      (click)="confirmCreate()"
+    >
+      @if (isSaving()) {
+        <span
+          class="spinner-border spinner-border-sm me-2"
+          aria-hidden="true"
+        ></span>
+      }
+      Crea classe
+    </button>
   </div>
 }

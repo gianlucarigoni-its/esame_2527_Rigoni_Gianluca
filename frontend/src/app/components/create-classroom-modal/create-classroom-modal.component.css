@@ -1,17 +1,14 @@
-.modal {
-  display: block;
-}
-
-.dropdown-selector {
-  position: relative;
-}
-
-.dropdown-selector .dropdown-menu {
+.dropdown-menu {
   max-height: 220px;
   overflow-y: auto;
 }
 
-.dropdown-selector input:focus {
+.selector-box {
+  cursor: text;
+}
+
+.selector-box input {
+  min-width: 0;
   outline: none;
-  box-shadow: none;
+  background: transparent;
 }

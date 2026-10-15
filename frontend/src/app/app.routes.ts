@@ -4,11 +4,12 @@ import { RegisterComponent } from './pages/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 import { authGuard } from './utils/auth.guard';
 import { DetailClassroomComponent } from './pages/detail-classroom/detail-classroom.component';
+import { LayoutComponent } from './pages/layout/layout.component';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
   {
@@ -20,12 +21,18 @@ export const routes: Routes = [
     component: RegisterComponent,
   },
   {
-    path: 'home',
-    component: HomeComponent,
+    path: '',
+    component: LayoutComponent,
     canActivate: [authGuard],
-  },
-  {
-    path: 'classrooms/:id',
-    component: DetailClassroomComponent,
+    children: [
+      {
+        path: 'home',
+        component: HomeComponent,
+      },
+      {
+        path: 'classrooms/:id',
+        component: DetailClassroomComponent,
+      },
+    ],
   },
 ];

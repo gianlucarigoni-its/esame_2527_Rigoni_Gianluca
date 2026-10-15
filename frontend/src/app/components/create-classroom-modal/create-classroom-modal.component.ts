@@ -1,118 +1,122 @@
+import { Component, computed, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
-  Component,
-  ElementRef,
-  computed,
-  input,
-  output,
-  signal,
-  viewChild,
-} from '@angular/core';
+  NgbActiveModal,
+  NgbDropdown,
+  NgbDropdownAnchor,
+  NgbDropdownItem,
+  NgbDropdownMenu,
+} from '@ng-bootstrap/ng-bootstrap';
+import { ClassroomService } from '../../services/classroom.service';
+import { UserService } from '../../services/user.service';
 import { User } from '../../utils/types/user.type';
 
 @Component({
   selector: 'app-create-classroom-modal',
-  imports: [],
+  imports: [NgbDropdown, NgbDropdownAnchor, NgbDropdownMenu, NgbDropdownItem],
   templateUrl: './create-classroom-modal.component.html',
   styleUrl: './create-classroom-modal.component.css',
-  host: {
-    '(document:click)': 'onDocumentClick($event)',
-  },
 })
 export class CreateClassroomModalComponent {
-  students = input.required<User[]>();
-  classroomCreated = output<{ name: string; studentIds: string[] }>();
+  private activeModal = inject(NgbActiveModal);
+  private classroomSrv = inject(ClassroomService);
+  private userSrv = inject(UserService);
 
-  private dropdownRef = viewChild.required<ElementRef<HTMLElement>>('dropdown');
-  private searchTimer: ReturnType<typeof setTimeout> | null = null;
+  // caricamento studenti
+  students = signal<User[]>([]);
+  studentsLoading = signal(true);
+  studentsError = signal(false);
 
-  isOpen = signal(false);
+  // stato della modale
   isConfirming = signal(false);
-  isDropdownOpen = signal(false);
+  isSaving = signal(false);
+  errorMessage = signal<string | null>(null);
 
-  name = '';
-  searchTerm = '';
-  selectedStudentIds: string[] = [];
+  // stato del form
+  name = signal('');
+  searchTerm = signal('');
+  selectedIds = signal<string[]>([]);
+
+  canProceed = computed(() => this.name().trim().length > 0);
 
   filteredStudents = computed(() => {
-    const term = this.debouncedSearchTerm().trim().toLowerCase();
+    const term = this.searchTerm().trim().toLowerCase();
     const all = this.students();
     if (!term) return all;
     return all.filter((s) => s.fullName.toLowerCase().includes(term));
   });
 
-  debouncedSearchTerm = signal('');
-
-  onSearchInput(event: Event) {
-    const value = (event.target as HTMLInputElement).value;
-    this.searchTerm = value;
-
-    if (this.searchTimer) {
-      clearTimeout(this.searchTimer);
-    }
-
-    this.searchTimer = setTimeout(() => {
-      this.debouncedSearchTerm.set(value);
-    }, 200);
-  }
   selectedStudents = computed(() => {
-    const ids = this.selectedStudentIds;
+    const ids = this.selectedIds();
     return this.students().filter((s) => ids.includes(s.id));
   });
 
-  open() {
-    this.isOpen.set(true);
-    this.isConfirming.set(false);
+  constructor() {
+    this.userSrv
+      .getStudents()
+      .pipe(takeUntilDestroyed())
+      .subscribe({
+        next: (students) => {
+          this.students.set(students);
+          this.studentsLoading.set(false);
+        },
+        error: () => {
+          this.studentsError.set(true);
+          this.studentsLoading.set(false);
+        },
+      });
   }
 
-  close() {
-    this.isOpen.set(false);
-    this.isConfirming.set(false);
-    this.isDropdownOpen.set(false);
-  }
-
-  toggleDropdown() {
-    this.isDropdownOpen.update((v) => !v);
-  }
-
-  onDocumentClick(event: MouseEvent) {
-    if (!this.isDropdownOpen()) return;
-    const target = event.target as HTMLElement;
-    if (!this.dropdownRef().nativeElement.contains(target)) {
-      this.isDropdownOpen.set(false);
-    }
+  isSelected(id: string): boolean {
+    return this.selectedIds().includes(id);
   }
 
   toggleStudent(id: string) {
-    if (this.selectedStudentIds.includes(id)) {
-      this.selectedStudentIds = this.selectedStudentIds.filter((s) => s !== id);
-    } else {
-      this.selectedStudentIds = [...this.selectedStudentIds, id];
-    }
-  }
-
-  isSelected(id: string) {
-    return this.selectedStudentIds.includes(id);
+    this.selectedIds.update((ids) =>
+      ids.includes(id) ? ids.filter((s) => s !== id) : [...ids, id],
+    );
   }
 
   clearSelection() {
-    this.selectedStudentIds = [];
+    this.selectedIds.set([]);
+  }
+
+  // Se il menu è aperto, ESC chiude solo il menu e non l'intera modale
+  onEscape(event: Event, dropdown: NgbDropdown) {
+    if (dropdown.isOpen()) {
+      event.stopPropagation();
+      dropdown.close();
+    }
   }
 
   goToConfirm() {
-    if (!this.name.trim()) return;
-    this.isDropdownOpen.set(false);
+    if (!this.canProceed()) return;
+    this.errorMessage.set(null);
     this.isConfirming.set(true);
   }
 
   backToForm() {
+    this.errorMessage.set(null);
     this.isConfirming.set(false);
   }
 
   confirmCreate() {
-    this.classroomCreated.emit({
-      name: this.name.trim(),
-      studentIds: this.selectedStudentIds,
+    if (this.isSaving()) return;
+    this.isSaving.set(true);
+    this.errorMessage.set(null);
+
+    this.classroomSrv.add(this.name().trim(), this.selectedIds()).subscribe({
+      next: (created) => this.activeModal.close(created),
+      error: () => {
+        this.isSaving.set(false);
+        this.errorMessage.set(
+          'Non è stato possibile creare la classe. Riprova.',
+        );
+      },
     });
-    this.close();
+  }
+
+  close() {
+    this.activeModal.dismiss();
   }
 }

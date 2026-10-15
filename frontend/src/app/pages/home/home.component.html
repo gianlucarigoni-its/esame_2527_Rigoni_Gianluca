@@ -1,29 +1,7 @@
 <div>
-  <!-- NAVBAR -->
-  <app-navbar
-    [user]="user()"
-    (toHome)="goTo('home')"
-    (toLogin)="goTo('login')"
-    (toRegister)="goTo('register')"
-    (toProfile)="goTo('profile')"
-    (toLogout)="logout()"
-  />
-
-  <!-- LISTA CLASSI CREATE O FREQUENTATNTI -->
-  @if (!user()) {
-    <div>ESEGUI IL LOGIN</div>
-  } @else {
-    <app-list-classroom
-      [user]="user()!"
-      [classrooms]="classi()"
-      (openMoal)="modal.open()"
-    ></app-list-classroom>
-  }
-
-  <!-- MDOAL -->
-  <app-create-classroom-modal
-    #modal
-    [students]="students()"
-    (classroomCreated)="onCreateClassroom($event)"
-  />
+  <app-list-classroom
+    [isTeacher]="isTeacher()"
+    [classrooms]="classrooms()"
+    (openModal)="openCreateModal()"
+  ></app-list-classroom>
 </div>

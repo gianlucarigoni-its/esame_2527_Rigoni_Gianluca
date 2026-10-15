@@ -1,69 +1,58 @@
 <nav class="navbar navbar-expand-lg bg-body-secondary">
   <div class="container-fluid">
-    <app-logo></app-logo>
+    <app-logo [routerLink]="'/home'"></app-logo>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <button class="btn btn-toolbar ms-4" (click)="(toHome)">
+      <button class="btn btn-toolbar ms-4" [routerLink]="'/home'">
         Le mie classi
       </button>
     </div>
 
-    @if (user() != null) {
-      <div class="dropdown ms-auto">
-        <!-- Bottone Profilo -->
-        <button
-          class="btn p-0 border-0 lh-1 dropdown-toggle-no-caret"
-          type="button"
-          (click)="toggleMenu()"
-        >
-          @if (user()?.picture) {
-            <img
-              [src]="user()?.picture"
-              alt="Foto profilo"
-              class="rounded-circle object-fit-cover"
-              style="width: 45px; height: 45px"
-            />
-          } @else {
-            <i class="bi bi-person-circle fs-2"></i>
-          }
-        </button>
+    <div class="dropdown ms-auto">
+      <!-- Bottone Profilo -->
+      <button
+        class="btn p-0 border-0 lh-1 dropdown-toggle-no-caret"
+        type="button"
+        (click)="toggleMenu()"
+      >
+        @if (user()?.picture) {
+          <img
+            [src]="user()?.picture"
+            alt="Foto profilo"
+            class="rounded-circle object-fit-cover"
+            style="width: 45px; height: 45px"
+          />
+        } @else {
+          <i class="bi bi-person-circle fs-2"></i>
+        }
+      </button>
 
-        <!-- Menu a tendina -->
-        <ul
-          class="dropdown-menu dropdown-menu-end end-0 shadow"
-          [class.show]="isMenuOpen()"
-          style="right: 0; left: auto"
-        >
-          <li>
-            <button
-              class="dropdown-item d-flex align-items-center gap-2"
-              (click)="toProfile.emit(); closeMenu()"
-            >
-              <i class="bi bi-person"></i>
-              <span>Profilo</span>
-            </button>
-          </li>
-          <li><hr class="dropdown-divider" /></li>
-          <li>
-            <button
-              class="dropdown-item d-flex align-items-center gap-2 text-danger"
-              (click)="toLogout.emit(); closeMenu()"
-            >
-              <i class="bi bi-box-arrow-right"></i>
-              <span>Logout</span>
-            </button>
-          </li>
-        </ul>
-      </div>
-    } @else {
-      <div class="ms-auto d-flex gap-2">
-        <button class="btn btn-outline-primary" (click)="toLogin.emit()">
-          Login
-        </button>
-        <button class="btn btn-primary" (click)="toRegister.emit()">
-          Register
-        </button>
-      </div>
-    }
+      <!-- Menu a tendina -->
+      <ul
+        class="dropdown-menu dropdown-menu-end end-0 shadow"
+        [class.show]="isMenuOpen()"
+        style="right: 0; left: auto"
+      >
+        <li>
+          <button
+            class="dropdown-item d-flex align-items-center gap-2"
+            /* (click)="toProfile.emit(); closeMenu()" */
+          >
+            <i class="bi bi-person"></i>
+            <span>Profilo</span>
+          </button>
+        </li>
+        <li><hr class="dropdown-divider" /></li>
+        <li>
+          <button
+            class="dropdown-item d-flex align-items-center gap-2 text-danger"
+            (click)="logout(); closeMenu()"
+          >
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Logout</span>
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>

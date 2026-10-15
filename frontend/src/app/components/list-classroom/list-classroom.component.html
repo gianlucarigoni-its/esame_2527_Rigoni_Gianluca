@@ -1,4 +1,4 @@
-<div class="container py-4">
+@if (classrooms().length > 0) {
   <div
     class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom"
   >
@@ -8,38 +8,33 @@
       <button
         type="button"
         class="btn btn-primary d-inline-flex align-items-center gap-2 shadow-sm"
-        (click)="openMoal.emit()"
+        (click)="openModal.emit()"
       >
-        <i class="bi bi-plus-lg"></i>
+        <i class="bi bi-plus-lg" aria-hidden="true"></i>
         <span>Crea nuova classe</span>
       </button>
     }
   </div>
 
-  @if (classrooms().length > 0) {
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-      @for (classroom of classrooms(); track classroom.id) {
-        <div class="col">
-          <app-card-classroom
-            [classroom]="classroom"
-            (selected)="onSelected(classroom)"
-          ></app-card-classroom>
-        </div>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    @for (classroom of classrooms(); track classroom.id) {
+      <div class="col">
+        <app-card-classroom [classroom]="classroom"></app-card-classroom>
+      </div>
+    }
+  </div>
+} @else {
+  <div class="text-center py-5 my-4 bg-light rounded-3 border">
+    <i class="bi bi-journal-x fs-1 text-secondary" aria-hidden="true"></i>
+    <h2 class="h5 fw-bold text-secondary mt-2 mb-1">
+      Nessuna classe disponibile
+    </h2>
+    <p class="text-muted small mb-0">
+      @if (isTeacher()) {
+        Non hai ancora creato nessuna classe.
+      } @else {
+        Al momento non fai parte di nessuna classe.
       }
-    </div>
-  } @else {
-    <div class="text-center py-5 my-4 bg-light rounded-3 border">
-      <i class="bi bi-journal-x fs-1 text-secondary"></i>
-      <h2 class="h5 fw-bold text-secondary mt-2 mb-1">
-        Nessuna classe disponibile
-      </h2>
-      <p class="text-muted small mb-0">
-        @if (isTeacher()) {
-          Non hai ancora creato nessuna classe.
-        } @else {
-          Al momento non fai parte di nessuna classe.
-        }
-      </p>
-    </div>
-  }
-</div>
+    </p>
+  </div>
+}
