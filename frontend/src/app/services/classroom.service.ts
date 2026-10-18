@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { effect, inject, Service, signal } from '@angular/core';
 import { AuthService } from './auth.service';
-import { Classroom } from '../utils/types/classroom.type';
+import { Classroom } from '../utils/interfaces/classroom';
 import { tap } from 'rxjs';
 
 @Service()
@@ -26,9 +26,11 @@ export class ClassroomService {
   fetch() {
     this.http.get<Classroom[]>('/api/classrooms').subscribe((classrooms) => {
       this.internal.set(classrooms);
-      console.log('service: ');
-      classrooms.forEach((c) => console.log(c));
     });
+  }
+
+  getById(id: string) {
+    return this.classrooms().find((c) => c.id === id);
   }
 
   add(name: string, students: string[]) {

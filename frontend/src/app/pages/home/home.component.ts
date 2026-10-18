@@ -1,14 +1,10 @@
-import { Component, computed, inject, signal } from '@angular/core';
-import { NavbarComponent } from '../../components/navbar/navbar.component';
-import { AuthService } from '../../services/auth.service';
+import { Component, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from '../../utils/types/user.type';
-import { ClassroomService } from '../../services/classroom.service';
-import { Classroom } from '../../utils/types/classroom.type';
-import { ListClassroomComponent } from '../../components/list-classroom/list-classroom.component';
-import { CreateClassroomModalComponent } from '../../components/create-classroom-modal/create-classroom-modal.component';
-import { UserService } from '../../services/user.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CreateClassroomModalComponent } from '../../components/create-classroom-modal/create-classroom-modal.component';
+import { ListClassroomComponent } from '../../components/list-classroom/list-classroom.component';
+import { AuthService } from '../../services/auth.service';
+import { ClassroomService } from '../../services/classroom.service';
 
 @Component({
   imports: [ListClassroomComponent],

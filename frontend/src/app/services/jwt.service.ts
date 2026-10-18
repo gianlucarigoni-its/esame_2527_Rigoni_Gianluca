@@ -1,6 +1,6 @@
 import { Service } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
-import { User } from '../utils/types/user.type';
+import { User } from '../utils/interfaces/user';
 
 @Service()
 export class JwtService {

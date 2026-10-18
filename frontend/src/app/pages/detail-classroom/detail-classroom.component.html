@@ -1,1 +1,32 @@
-<p>detail-classroom works!</p>
+@if (accessDenied()) {
+  <div class="alert alert-warning text-center">
+    Non ti è consentito accedere alla classe o non esiste.
+  </div>
+} @else {
+  <div class="d-flex justify-content-between">
+    <h1>{{ classroom()?.name }}</h1>
+    @if (!isStudent()) {
+      <button class="btn btn-sm btn-primary m-2" (click)="openModal()">
+        Aggiungi attività
+      </button>
+    }
+  </div>
+  @if (completeError(); as e) {
+    <div class="alert alert-danger">{{ e }}</div>
+  }
+  <div class="list-group-flush">
+    @for (a of assignments(); track a.id) {
+      <app-assignment-item
+        [assignment]="a"
+        [isStudent]="isStudent()"
+        (complete)="askComplete($event)"
+      />
+    } @empty {
+      <div
+        class="list-group-item text-center text-body-secondary pt-5 border-top"
+      >
+        Nessuna attività assegnata
+      </div>
+    }
+  </div>
+}

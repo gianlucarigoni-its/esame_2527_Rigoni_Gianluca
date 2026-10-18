@@ -6,16 +6,18 @@ import {
   inject,
   output,
   input,
+  computed,
 } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { User } from '../../utils/types/user.type';
+import { User } from '../../utils/interfaces/user';
 import { LogoComponent } from '../logo/logo.component';
 import { Router, RouterLink } from '@angular/router';
+import { AvatarComponent } from '../avatar/avatar.component';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  imports: [LogoComponent, RouterLink],
+  imports: [LogoComponent, RouterLink, AvatarComponent],
 })
 export class NavbarComponent {
   protected authSrv = inject(AuthService);
@@ -30,6 +32,10 @@ export class NavbarComponent {
   toggleMenu() {
     this.isMenuOpen.update((open) => !open);
   }
+
+  getRole = computed(() =>
+    this.user()?.role === 'student' ? 'Studente' : 'Docente',
+  );
 
   closeMenu() {
     this.isMenuOpen.set(false);

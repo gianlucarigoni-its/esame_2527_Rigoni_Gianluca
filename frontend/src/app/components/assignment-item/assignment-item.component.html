@@ -1,0 +1,40 @@
+<div class="list-group-item border rounded mb-3 p-3">
+  <div class="flex-grow-1">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h5 class="mb-1">{{ assignment().title }}</h5>
+        <small class="text-body-secondary">
+          Creata il {{ assignment().createdAt | date: "dd/MM/yyyy" }}
+        </small>
+      </div>
+      <div>
+        @if (isStudent()) {
+          <button
+            class="btn btn-sm"
+            [class.btn-primary]="!assignment().completed"
+            [class.btn-success]="assignment().completed"
+            [disabled]="assignment().completed"
+            (click)="completeAssignment(assignment().id)"
+          >
+            {{
+              !assignment().completed ? "Segna come completata" : "Completata"
+            }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center gap-2 mt-2">
+      <ngb-progressbar
+        class="flex-grow-1"
+        height="8px"
+        [value]="assignment().completedCount"
+        [max]="assignment().studentsCount || 1"
+        [type]="allDone() ? 'success' : 'primary'"
+      />
+      <small class="text-nowrap">
+        {{ assignment().completedCount }}/{{ assignment().studentsCount }}
+      </small>
+    </div>
+  </div>
+</div>

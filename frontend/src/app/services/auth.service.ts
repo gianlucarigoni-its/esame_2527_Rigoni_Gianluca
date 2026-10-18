@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Service, signal } from '@angular/core';
 import { map, tap } from 'rxjs';
-import { Role } from '../utils/enum/role.enum';
-import { User } from '../utils/types/user.type';
+import { Role } from '../utils/enum/role';
+import { User } from '../utils/interfaces/user';
 import { JwtService } from './jwt.service';
 
 @Service()

@@ -4,7 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { catchError, of, Subject, throwError } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { User } from '../../utils/types/user.type';
+import { User } from '../../utils/interfaces/user';
 import { LogoComponent } from '../../components/logo/logo.component';
 import { OnInit } from '@angular/core';
 

@@ -15,10 +15,12 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    title: 'Login',
   },
   {
     path: 'register',
     component: RegisterComponent,
+    title: 'Register',
   },
   {
     path: '',
@@ -28,6 +30,7 @@ export const routes: Routes = [
       {
         path: 'home',
         component: HomeComponent,
+        title: 'Le mie classi',
       },
       {
         path: 'classrooms/:id',
@@ -35,4 +38,5 @@ export const routes: Routes = [
       },
     ],
   },
+  { path: '**', redirectTo: 'home' },
 ];

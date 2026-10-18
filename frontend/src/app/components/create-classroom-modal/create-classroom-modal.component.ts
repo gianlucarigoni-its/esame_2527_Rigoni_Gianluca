@@ -9,7 +9,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { ClassroomService } from '../../services/classroom.service';
 import { UserService } from '../../services/user.service';
-import { User } from '../../utils/types/user.type';
+import { User } from '../../utils/interfaces/user';
 
 @Component({
   selector: 'app-create-classroom-modal',
@@ -22,22 +22,21 @@ export class CreateClassroomModalComponent {
   private classroomSrv = inject(ClassroomService);
   private userSrv = inject(UserService);
 
-  // caricamento studenti
   students = signal<User[]>([]);
   studentsLoading = signal(true);
   studentsError = signal(false);
 
-  // stato della modale
   isConfirming = signal(false);
   isSaving = signal(false);
   errorMessage = signal<string | null>(null);
 
-  // stato del form
   name = signal('');
   searchTerm = signal('');
   selectedIds = signal<string[]>([]);
 
-  canProceed = computed(() => this.name().trim().length > 0);
+  canProceed = computed(
+    () => this.name().trim().length > 0 && this.selectedIds().length > 0,
+  );
 
   filteredStudents = computed(() => {
     const term = this.searchTerm().trim().toLowerCase();
@@ -81,7 +80,6 @@ export class CreateClassroomModalComponent {
     this.selectedIds.set([]);
   }
 
-  // Se il menu è aperto, ESC chiude solo il menu e non l'intera modale
   onEscape(event: Event, dropdown: NgbDropdown) {
     if (dropdown.isOpen()) {
       event.stopPropagation();

@@ -1,7 +1,7 @@
 import { Component, computed, inject, input, output } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from '../../utils/types/user.type';
-import { Classroom } from '../../utils/types/classroom.type';
+import { User } from '../../utils/interfaces/user';
+import { Classroom } from '../../utils/interfaces/classroom';
 import { CardClassroomComponent } from '../card-classroom/card-classroom.component';
 
 @Component({
@@ -15,6 +15,4 @@ export class ListClassroomComponent {
 
   isTeacher = input<boolean>(false);
   classrooms = input.required<Classroom[]>();
-
-  openModal = output<void>();
 }

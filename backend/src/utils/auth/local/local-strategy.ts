@@ -13,7 +13,6 @@ passport.use(
     async function (username, password, done) {
       try {
         const identity = await UserIdentityModel.findOne({ "credentials.username": username });
-        // non trovo l'utente
         if (!identity) {
           return done(null, false, { message: `username ${username} not found` });
         }

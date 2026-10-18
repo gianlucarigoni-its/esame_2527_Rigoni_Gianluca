@@ -1,10 +1,10 @@
-import { Role } from '../enum/role.enum';
+import { Role } from '../enum/role';
 
-export type User = {
+export interface User {
   id: string;
   firstName: string;
   lastName: string;
   fullName: string;
   role: Role;
   picture: string;
-};
+}

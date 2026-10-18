@@ -78,7 +78,7 @@
             }
           </button>
         } @empty {
-          <div class="dropdown-item text-muted small">
+          <div class="dropdown-item text-body-secondary small">
             @if (studentsLoading()) {
               Caricamento studenti...
             } @else if (studentsError()) {
@@ -115,7 +115,9 @@
         }
       </ul>
     } @else {
-      <p class="text-muted small mb-0">Nessuno studente selezionato.</p>
+      <p class="text-body-secondary small mb-0">
+        Nessuno studente selezionato.
+      </p>
     }
 
     @if (errorMessage()) {
@@ -126,14 +128,6 @@
   </div>
 
   <div class="modal-footer">
-    <button
-      type="button"
-      class="btn btn-secondary"
-      [disabled]="isSaving()"
-      (click)="backToForm()"
-    >
-      Indietro
-    </button>
     <button
       type="button"
       class="btn btn-primary"

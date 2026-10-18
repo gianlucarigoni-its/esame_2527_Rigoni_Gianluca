@@ -1,9 +1,9 @@
-import { User } from './user.type';
+import { User } from './user';
 
-export type Classroom = {
+export interface Classroom {
   id: string;
   name: string;
   studentsCount: number;
   students: User[];
   createdBy: User;
-};
+}

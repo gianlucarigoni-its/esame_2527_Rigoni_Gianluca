@@ -16,7 +16,6 @@ export const list = async (req: TypedRequest, res: Response, next: NextFunction)
     if (!classroom) throw new ClassroomNotFoundError();
 
     if (req.user!.role == Role.student) {
-      // Student
       let isSubscribed = false;
       classroom.students.map((s) => {
         if (req.user!.id == s.toString()) isSubscribed = true;
@@ -26,7 +25,6 @@ export const list = async (req: TypedRequest, res: Response, next: NextFunction)
       const list = await assignmentSrv.getStudentAssignmentsList(classroom.id.toString(), req.user!.id);
       res.status(200).json(list);
     } else {
-      // Teacher
       if (req.user!.id != classroom.createdBy.toString()) throw new ClassroomAccessDeniedError();
 
       const list = await assignmentSrv.getTeacherAssignmentsList(classroom.id.toString());
